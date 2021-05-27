@@ -46,12 +46,37 @@ class LinkedInCrawler:
         #resp = json.loads(response.content)
         has_profile = "displayName" in response.text
         print_err(" [+] {}: {}".format(email, "Found" if has_profile else "Not Found"))
+        
 
         if(has_profile):
-            print(email+"|"+response.text)
+            person_json = self.extract_person_from_json(response.text)
+            print(email+"|"+person_json)
+            summary = self.display_summary(response.text)
+            if(summary != ""):
+                print_err(" [+] Summary: {}".format(summary))
 
         return has_profile
 
+    def extract_person_from_json(self,response_json):
+        data_json = json.loads(response_json)
+        if("persons" in data_json and len(data_json['persons']) > 0):
+            return json.dumps(data_json["persons"][0])
+        else:
+            return "{}"
+        
+    def display_summary(self,response_json):
+        data_json = json.loads(response_json)
+        if("persons" in data_json and len(data_json['persons']) > 0):
+            p = data_json["persons"][0]
+            
+            displayName = p["displayName"] if "displayName" in p else ""
+            headline    = p["headline"]    if "headline" in p else ""
+            companyName = p["companyName"] if "companyName" in p else ""
+            location    = p["location"]    if "location" in p else ""
+            
+            return "{}, \"{}\" at \"{}\", \"{}\"".format(displayName,headline,companyName, location)
+        else:
+            return ""
 
     def parse_emails(self,file_input,skip_email):
         """

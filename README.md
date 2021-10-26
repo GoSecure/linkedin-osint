@@ -1,6 +1,8 @@
 # LinkedIn Email OSINT
 
-This repository host a small proof-of-concept that deanonymize emails.
+This repository host a small proof-of-concept that deanonymizes emails.
+
+Instructions on how to extract a token required to use the tool can be found here: https://www.gosecure.net/blog/2021/05/27/step-by-step-how-to-deanonymize-emails-on-linkedin/
 
 ## How to use
 
